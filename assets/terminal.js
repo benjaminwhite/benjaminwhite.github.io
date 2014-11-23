@@ -24,14 +24,16 @@ $(document).ready(function() {
     }
   });
 
+  // Allows ctrl+l to clear screen
   terminal.keydown(function(e){
     if(e.ctrlKey && e.keyCode == 76){
       clearScreen();
     }
   });
 
-  var availableCommands = ['clear', 'help', 'projects', 'resume'];
+  var availableCommands = ['clear', 'help', 'projects', 'resume', 'welcome'];
 
+  // Processes commands from the terminal.
   function processCommand(command) {
     var regex = /(".*"|'.*'|[^\s]+)+/g;
     var args = command.match(regex);
@@ -59,12 +61,16 @@ $(document).ready(function() {
     }
   }
 
+  /* These two functions allow the screen to be "cleared"
+   * clearScreen scrolls to the bottom of the page.
+   * setPadding adds padding to the bottom of the textarea to
+   * allow the text to reach the top.
+   */
   function clearScreen(){
     terminal.scrollTop(Infinity);
   }
-
   function setPadding(){
-    var fineTuning = 2;
+    var fineTuning = -3;
     var padding = terminal.outerHeight() - lineHeight + fineTuning;
     terminal.css('padding-bottom', padding);
   }
