@@ -2,7 +2,8 @@
   position: fixed;
   height: 100%;
   width: 100%;
-  background: #132139;
+  background: black;
+  /*background: rgb(21, 45, 56);*/
   top: 0px;
   left: 0px;
 }
@@ -10,15 +11,16 @@
 #myname {
   font-family: 'Inconsolata', monospace;
   font-size: 36px;
-  color: white;
+  color: #C6E7D6;
   text-align: center;
 }
 
 #terminal {
   font-family: 'Inconsolata', monospace;
   font-size: 30px;
+  font-weight: 100;
   line-height: 1.2;
-  color: white;
+  color: #C6E7D6;
   word-break: break-all;
 
   padding: 0px;

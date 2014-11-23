@@ -79,5 +79,4 @@ $(document).ready(function() {
 
   terminal.val(buffer);
   terminal.focus();
-
 });
