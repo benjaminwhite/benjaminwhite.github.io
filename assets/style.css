@@ -1,0 +1,38 @@
+#container {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  background: #132139;
+  top: 0px;
+  left: 0px;
+}
+
+#myname {
+  font-family: 'Inconsolata', monospace;
+  font-size: 36px;
+  color: white;
+  text-align: center;
+}
+
+#terminal {
+  font-family: 'Inconsolata', monospace;
+  font-size: 36px;
+  line-height: 1.2;
+  color: white;
+  word-break: break-all;
+
+  padding: 0px;
+  outline: none;
+  resize: none;
+  cursor: default;
+  background: transparent;
+  border: none;
+
+  box-sizing: border-box;
+
+  position: fixed;
+  height: 95%;
+  width: 700px;
+  left: 50%;
+  transform: translate(-50%);
+}
