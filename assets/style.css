@@ -16,7 +16,7 @@
 
 #terminal {
   font-family: 'Inconsolata', monospace;
-  font-size: 36px;
+  font-size: 30px;
   line-height: 1.2;
   color: white;
   word-break: break-all;
@@ -32,7 +32,7 @@
 
   position: fixed;
   height: 95%;
-  width: 700px;
+  width: 750px;
   left: 50%;
   transform: translate(-50%);
 }

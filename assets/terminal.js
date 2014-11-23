@@ -47,6 +47,13 @@ $(document).ready(function() {
         return 'List of projects go here.'
       case 'sudo':
         return 'Nice try.\n';
+      case 'welcome':
+        var welcome_str = "" +
+"Yb        dP       8\n" +
+" Yb  db  dP  .d88b 8 .d8b .d8b. 8d8b.d8b. .d88b\n" +
+"  YbdPYbdP   8.dP' 8 8    8' .8 8P Y8P Y8 8.dP'\n" +
+"   YP  YP    `Y88P 8 `Y8P `Y8P' 8   8   8 `Y88P\n";
+        return welcome_str;
       default:
         return 'bensh: command not found: ' + command + '\n';
     }
@@ -57,8 +64,8 @@ $(document).ready(function() {
   }
 
   function setPadding(){
-    var fineTuning = 3;
-    var padding = terminal.outerHeight() - lineHeight - fineTuning;
+    var fineTuning = 2;
+    var padding = terminal.outerHeight() - lineHeight + fineTuning;
     terminal.css('padding-bottom', padding);
   }
   setPadding();
