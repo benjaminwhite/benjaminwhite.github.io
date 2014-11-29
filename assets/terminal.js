@@ -1,17 +1,19 @@
 $(document).ready(function() {
   // SETUP
-  var PS1 = '> ';
+  var PS1 = '$';
   var buffer = PS1;
   var terminal = $('#terminal');
   var lineHeight = parseInt(terminal.css('line-height'), 10);
 
   terminal.on('input', function() {
-    var newBuffer = terminal.val();
+    console.log(terminal[0].textContent);
+    var newBuffer = terminal.text();
     if(newBuffer.indexOf(buffer) !== 0){
-      terminal.val(buffer);
+      terminal.text(buffer);
       return;
     }
     var lastChar = newBuffer.slice(-1);
+    //console.log(lastChar);
     if(lastChar === '\n'){
       var command = newBuffer.slice(buffer.length, -1).trim();
       if (command) {
@@ -20,7 +22,7 @@ $(document).ready(function() {
       } else {
         buffer = newBuffer + PS1;
       }
-      terminal.val(buffer);
+      terminal.text(buffer);
     }
   });
 
@@ -77,6 +79,6 @@ $(document).ready(function() {
   setPadding();
   $(window).resize(setPadding);
 
-  terminal.val(buffer);
-  terminal.focus();
+  terminal.text(buffer);
+  //terminal.focus();
 });
