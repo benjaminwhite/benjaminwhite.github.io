@@ -1,84 +1,86 @@
 $(document).ready(function() {
-  // SETUP
-  var PS1 = '$';
-  var buffer = PS1;
   var terminal = $('#terminal');
-  var lineHeight = parseInt(terminal.css('line-height'), 10);
+  var projects = { name: 'projects', type: 'dir', parent: root, children: []};
+  var root = { name: '', type: 'dir', parent: null, children: [projects]};
+  var benshrc = { name: '.benshrc', type: 'file', parent: root, content:'welcome'};
+  var favorites = { name: '/favorites', type: 'dir', parent: root, children: []};
+  var currentDir = root;
 
-  terminal.on('input', function() {
-    console.log(terminal[0].textContent);
-    var newBuffer = terminal.text();
-    if(newBuffer.indexOf(buffer) !== 0){
-      terminal.text(buffer);
-      return;
+  function ps1() {
+    var directoryString = "";
+    var directory = currentDir;
+    while (directory !== null) {
+      directoryString = directory.name + directoryString;
+      directory = directory.parent;
     }
-    var lastChar = newBuffer.slice(-1);
-    //console.log(lastChar);
-    if(lastChar === '\n'){
-      var command = newBuffer.slice(buffer.length, -1).trim();
-      if (command) {
-        var output = processCommand(command);
-        buffer = newBuffer + output + PS1;
-      } else {
-        buffer = newBuffer + PS1;
-      }
-      terminal.text(buffer);
+    if (directoryString === '') {
+      directoryString = '/';
+    }
+    return "<span style='color: #1B8EA2'>" + directoryString+ "</span><span style='color: #DB4C30'> $</span> "
+  }
+
+  var command = "";
+
+  terminal.keypress(function(e) {
+    var key = String.fromCharCode(e.which);
+    if(e.which == 13) {
+      processCommand(command);
+    } else {
+      command += key;
+      echo();
     }
   });
 
-  // Allows ctrl+l to clear screen
   terminal.keydown(function(e){
-    if(e.ctrlKey && e.keyCode == 76){
-      clearScreen();
+    if (e.keyCode == 8){
+      e.preventDefault();
+      command = command.slice(0, -1);
+      echo();
     }
   });
 
-  var availableCommands = ['clear', 'help', 'projects', 'resume', 'welcome'];
-
-  // Processes commands from the terminal.
-  function processCommand(command) {
+  function processCommand(stdin) {
     var regex = /(".*"|'.*'|[^\s]+)+/g;
-    var args = command.match(regex);
-    var program = args.shift();
-    switch(program) {
-      case 'clear':
-        clearScreen();
-        return '';
-      case 'help':
-        return 'Welcome to Ben Shell.\nHeres a list of available commands:\n'
-          + availableCommands.join('\n') + '\n';
-      case 'projects':
-        return 'List of projects go here.'
+    var words = command.match(regex);
+    switch(words[0]) {
+      case 'ls':
+        var directories = "";
+        for (var i = 0; i < currentDir.children.length; i++){
+          directories += (currentDir.children[i].name + "<br>");
+        }
+        output(directories);
+        break;
+      case 'hack':
+        output('HACK THE PLANET!');
+        break;
       case 'sudo':
-        return 'Nice try.\n';
+        output('Nice try.');
+        break;
       case 'welcome':
-        var welcome_str = "" +
-"Yb        dP       8\n" +
-" Yb  db  dP  .d88b 8 .d8b .d8b. 8d8b.d8b. .d88b\n" +
-"  YbdPYbdP   8.dP' 8 8    8' .8 8P Y8P Y8 8.dP'\n" +
-"   YP  YP    `Y88P 8 `Y8P `Y8P' 8   8   8 `Y88P\n";
-        return welcome_str;
+        output('bensh v0.1<br><br>Enjoy.');
+        break;
       default:
-        return 'bensh: command not found: ' + command + '\n';
+        output('<span style="color: #DB4C30"> bensh: command not found:</span> ' + command);
     }
+
+      command = "";
+      newInput();
   }
 
-  /* These two functions allow the screen to be "cleared"
-   * clearScreen scrolls to the bottom of the page.
-   * setPadding adds padding to the bottom of the textarea to
-   * allow the text to reach the top.
-   */
-  function clearScreen(){
-    terminal.scrollTop(Infinity);
+  function newInput() {
+    terminal.append($('<li>', { class: 'stdin', html: ps1()}))
   }
-  function setPadding(){
-    var fineTuning = -3;
-    var padding = terminal.outerHeight() - lineHeight + fineTuning;
-    terminal.css('padding-bottom', padding);
-  }
-  setPadding();
-  $(window).resize(setPadding);
 
-  terminal.text(buffer);
-  //terminal.focus();
+  function echo() {
+    var target = $('.stdin').last();
+    target.html(ps1() + $('<span>', {text: command}).html());
+  }
+
+  function output(htmlOut) {
+    terminal.append($('<li>', { class: 'stdout', html: htmlOut}))
+  }
+
+  $(window).load(function() {
+    newInput();
+  });
 });

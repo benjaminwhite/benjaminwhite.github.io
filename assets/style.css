@@ -1,6 +1,7 @@
 html, body {
   height:100%;
   margin: 0;
+  overflow: hidden;
 }
 
 svg {
@@ -16,9 +17,11 @@ svg {
   background-color: #141414;
 }
 
-/*#cover {*/
-  /*-webkit-transform-origin: 50%, 50%;*/
-/*}*/
+#cover {
+  position absolute;
+  top: 0;
+  left; 0;
+}
 
 #container {
   position: relative;
@@ -27,6 +30,31 @@ svg {
   margin: 0 auto;
   z-index: 1;
 }
+
+#picture {
+  position: absolute;
+  display: block;
+  height: 160px;
+  width: 160px;
+  border-radius: 100%;
+  left:0;
+  right:0;
+  top: 40px;
+  margin-left:auto;
+  margin-right:auto;
+  opacity: 0.85;
+  display: none;
+}
+
+.logo {
+  position: absolute;
+  height: 80px;
+  width: 80px;
+  display: none;
+  opacity: 0.75;
+  cursor: pointer;
+}
+
 
 #terminal {
   position: absolute;
@@ -42,13 +70,18 @@ svg {
   font-size: 32px;
   line-height: 1.25;
   letter-spacing: 4px;
-  border: 1px solid white;
+  border-top: 1px solid #80D0DE;
+  border-left: 1px solid #80D0DE;
+  border-right: 1px solid #80D0DE;
+  outline: none;
+  overflow: scroll;
+  display: none;
   /*background: #DB4C30;*/
 }
 
 li {
   list-style-type: none;
-  color: white;
+  color: #C6E7D6;
   /*width: 100%;*/
 }
 

@@ -16,17 +16,48 @@ $(document).ready(function() {
   $(window).load(function() {
     drawGrid();
     centerG();
+    centerLogos();
     drawCircles();
+    containerHeight();
     setTimeout(drawName, gridMinorDelay + gridMinorDuration);
+    setTimeout(function() {
+      $("#terminal").show();
+    }, circleDelay + 2*circleDuration);
+
   });
 
   $(window).resize(function() {
     drawGrid();
     centerG();
+    centerLogos();
+    containerHeight();
   });
+
+  $("#github").click(function() {
+    window.open('https://github.com/benjaminwhite');
+  });
+
+  $("#linkedin").click(function() {
+    window.open('https://www.linkedin.com/pub/benjamin-white/8b/b54/249/');
+  });
+
+  //$("#terminal").click(function() {
+    //$("#container").scrollTop(infinity);
+  //})
 
   function centerG() {
     d3.select("g").attr("transform", "translate(" + $("#cover").width()/2 + ", 0)")
+  }
+  function centerLogos() {
+    var github = $("#github");
+    var linkedin = $("#linkedin");
+    linkedin.css({ top: "80px", left: $("#cover").width()/2 + 3*step});
+    github.css({ top: "80px", left: $("#cover").width()/2 - 5*step});
+  }
+
+  function containerHeight() {
+    //var height = parseInt($('body').height());
+    //$('#container').height((height + 200) + "px");
   }
 
   function drawName() {
@@ -79,30 +110,33 @@ $(document).ready(function() {
         .attr("r", radius);
     }
     var m = Math.floor(name.length/2)-1,
-        n = m + 2,
-        w = 9,
-        interval = null;
+        n = m + 2;
 
-    interval = setInterval(function(){
-      if (n-m <= name.length) {
-        for(var z = m; z < n; z++){
-          drawLetter(blank, z);
-        }
-        m--;
-        n++;
-      } else {
+    function animateLetters(w){
+      setTimeout(function() {
         if (w >= 0) {
           for(var l = 0; l < name.length; l++) {
             var letter = dotmatrix[name.charAt(l)];
             letter = (letter.substring(5*w, 45) + blank).substring(0, 45);
             drawLetter(letter, l);
           }
-          w--;
-        } else {
-          clearInterval(interval);
+          animateLetters(--w);
         }
-      }
-    }, 90);
+      }, 75)
+    }
+    function drawMatrix(a, b) {
+      setTimeout(function() {
+        if (b-a <= name.length) {
+          for(var z = a; z < b; z++){
+            drawLetter(blank, z);
+          }
+          drawMatrix(--a, ++b);
+        } else {
+          animateLetters(9);
+        }
+      }, 100)
+    } 
+    drawMatrix(m, n);
   }
 
   function drawCircles(){
@@ -148,6 +182,15 @@ $(document).ready(function() {
           return function(t){d.endAngle = interpolate(t); return arc(d);}
         });
       });
+
+    setTimeout(function() {
+      $("#picture").show();
+    }, circleDelay + circleDuration);
+
+    setTimeout(function() {
+      $("#github").show();
+      $("#linkedin").show();
+    }, circleDelay + 2*circleDuration);
   }
 
   function drawGrid(){
