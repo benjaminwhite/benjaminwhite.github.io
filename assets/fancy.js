@@ -5,7 +5,7 @@ $(document).ready(function() {
 
 var cell = 80,
     step = cell/2,
-    shortName = "BEN WHITE"
+    shortName = "BENWHITE"
     longName = "BENJAMIN WHITE"
     radian = Math.PI/180,
     gridMajorDelay = 250,
@@ -19,9 +19,63 @@ var cell = 80,
 function drawElements() {
   drawGrid();
   drawCircles();
+  setTimeout(drawName, 3000);
+  
 }
 
 function drawName() {
+  var width = $(window).width(),
+      height = $(window).height(),
+      xOffset = (width % (2 * cell))/2,
+      yOffset = step;
+
+  if (width >= 580) {
+    var name = longName;
+  } else {
+    var name = shortName;
+  }
+
+  var xBlock = step/6;
+  var yBlock = cell/10;
+  var radius = 3;
+  var xStart = width/2 - step*name.length/2;
+  var yStart = yOffset + 5*step;
+  var blank = "000000000000000000000000000000000000000000000";
+  var dotmatrix = {
+      "B": "000001111010001100011111010001100011111000000",
+      "E": "000001111110000100001111010000100001111100000",
+      "N": "000001000110001110011010110011100011000100000",
+      "J": "000000111100001000010000100001100010111000000",
+      "A": "000000011101001100011000111111100011000100000",
+      "M": "000001000111011101011010110001100011000100000",
+      "W": "000001000110001100011010110101110111000100000",
+      "H": "000001000110001100011111110001100011000100000",
+      "I": "000001111100100001000010000100001001111100000",
+      "T": "000001111100100001000010000100001000010000000",
+      " ": "000000000000000000000000000000000000000000000"
+  }
+  var svg = d3.select("body").select("svg");
+  for(var l = 0; l < name.length; l++) {
+    var letter = blank.substring(0, 5*0) + dotmatrix[name.charAt(l)];
+    letter = letter.substring(0, 45);
+    svg.selectAll(".letter-" + l)
+       .data(letter.split(""))
+       .enter()
+       .append("circle")
+       .attr("cx", function(d, i) { return xStart + l*step + xBlock*(i%5+1); })
+       .attr("cy", function(d, i) { return yStart + yBlock*Math.floor(i/5+1); })
+       .attr("opacity", function(d) {
+         if (d == "1") {
+           return 0.70;
+         } else if (d == "0") {
+           return 0.10;
+         } else {
+           return 0;
+         }
+       })
+       .attr("fill", "#F8FFC4")
+       .attr("r", radius);
+  }
 }
 
 function drawCircles(){
@@ -41,11 +95,11 @@ function drawCircles(){
                innerRadius: cell-2, outerRadius: cell, xShift: 0,
                yShift: yOffset+cell, arcClass: 'img-circle', delay: circleDelay},
               {startAngle: 270*radian, endAngle: 270*radian, travel: -360*radian,
-               innerRadius: step-2, outerRadius: step, xShift: 5*step,
+               innerRadius: step-2, outerRadius: step, xShift: 4*step,
                yShift: yOffset+cell, arcClass: 'logo-circle',
                delay: circleDelay + circleDuration},
               {startAngle: 90*radian, endAngle: 90*radian, travel: -360*radian,
-               innerRadius: step-2, outerRadius: step, xShift: -5*step,
+               innerRadius: step-2, outerRadius: step, xShift: -4*step,
                yShift: yOffset+cell, arcClass: 'logo-circle',
                delay: circleDelay + circleDuration}];
 
