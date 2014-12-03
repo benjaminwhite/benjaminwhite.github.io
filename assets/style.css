@@ -29,6 +29,7 @@ svg {
   height: 100%;
   margin: 0 auto;
   z-index: 1;
+  /*overflow: scroll;*/
 }
 
 #picture {
@@ -55,7 +56,6 @@ svg {
   cursor: pointer;
 }
 
-
 #terminal {
   position: absolute;
   box-sizing: border-box;
@@ -76,7 +76,19 @@ svg {
   outline: none;
   overflow: scroll;
   display: none;
-  /*background: #DB4C30;*/
+}
+
+.cursor {
+  display: inline-block;
+  width: 15px;
+  height: 30px;
+  background: #C6E7D6;
+  vertical-align: bottom;
+  margin-bottom: 5px;
+}
+
+.stdout {
+  white-space: pre-wrap;
 }
 
 li {

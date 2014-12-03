@@ -3,6 +3,7 @@ $(document).ready(function() {
       step = cell/2,
       shortName = "BENWHITE"
       longName = "BENJAMIN WHITE"
+      terminal = $("#terminal"),
       radian = Math.PI/180,
       gridMajorDelay = 250,
       gridMajorDuration = 250,
@@ -17,12 +18,13 @@ $(document).ready(function() {
     drawGrid();
     centerG();
     centerLogos();
+    terminalPadding();
     drawCircles();
     containerHeight();
     setTimeout(drawName, gridMinorDelay + gridMinorDuration);
     setTimeout(function() {
-      $("#terminal").show();
-    }, circleDelay + 2*circleDuration);
+      terminal.show();
+    }, circleDelay + 4*circleDuration);
 
   });
 
@@ -30,7 +32,9 @@ $(document).ready(function() {
     drawGrid();
     centerG();
     centerLogos();
+    terminalPadding();
     containerHeight();
+    terminalPadding();
   });
 
   $("#github").click(function() {
@@ -40,10 +44,6 @@ $(document).ready(function() {
   $("#linkedin").click(function() {
     window.open('https://www.linkedin.com/pub/benjamin-white/8b/b54/249/');
   });
-
-  //$("#terminal").click(function() {
-    //$("#container").scrollTop(infinity);
-  //})
 
   function centerG() {
     d3.select("g").attr("transform", "translate(" + $("#cover").width()/2 + ", 0)")
@@ -55,10 +55,35 @@ $(document).ready(function() {
     github.css({ top: "80px", left: $("#cover").width()/2 - 5*step});
   }
 
+  function terminalPadding() {
+    var padding = terminal.outerHeight() - 40;
+    terminal.css('padding-bottom', padding);
+  }
+
+  function blinker() {
+      $('.cursor').fadeOut(500);
+      $('.cursor').fadeIn(250);
+  }
+  setInterval(blinker, 1750);
+
   function containerHeight() {
     //var height = parseInt($('body').height());
     //$('#container').height((height + 200) + "px");
   }
+
+  //terminal.focus(function() {
+    //var winHeight = $(window).height();
+    //var container = $('#container');
+    //container.height(winHeight + 5*step);
+    //$(window).animate({scrollTop: Infinity});
+  //});
+
+  //terminal.focusout(function() {
+    //var winHeight = $(window).height();
+    //var container = $('#container');
+    //container.height(winHeight);
+    //$(window).animate({scrollTop: 0});
+  //});
 
   function drawName() {
     var width = $("#cover").width(),
@@ -143,7 +168,8 @@ $(document).ready(function() {
     var width = $(window).width(),
         height = $(window).height(),
         xOffset = (width % (2 * cell))/2,
-        yOffset = step;
+        yOffset = step,
+        logoOffset = 2*cell;
 
     var svg = d3.select("#cover").select("g");
 
@@ -156,11 +182,11 @@ $(document).ready(function() {
                 innerRadius: cell-2, outerRadius: cell, xShift: 0,
                 yShift: yOffset+cell, arcClass: 'img-circle', delay: circleDelay},
                 {startAngle: 270*radian, endAngle: 270*radian, travel: -360*radian,
-                innerRadius: step-2, outerRadius: step, xShift: 4*step,
+                innerRadius: step-2, outerRadius: step, xShift: logoOffset,
                 yShift: yOffset+cell, arcClass: 'logo-circle',
                 delay: circleDelay + circleDuration},
                 {startAngle: 90*radian, endAngle: 90*radian, travel: -360*radian,
-                innerRadius: step-2, outerRadius: step, xShift: -4*step,
+                innerRadius: step-2, outerRadius: step, xShift: -logoOffset,
                 yShift: yOffset+cell, arcClass: 'logo-circle',
                 delay: circleDelay + circleDuration}];
 
